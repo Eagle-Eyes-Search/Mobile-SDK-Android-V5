@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fpv_holder"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <dji.v5.ux.core.widget.fpv.FPVWidget
+        android:id="@+id/widget_primary_fpv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
