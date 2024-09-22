@@ -17,9 +17,16 @@ import dji.sampleV5.aircraft.models.MSDKManagerVM
 import dji.sampleV5.aircraft.models.globalViewModels
 import dji.sampleV5.aircraft.util.Helper
 import dji.sampleV5.aircraft.util.ToastUtils
+import dji.sdk.keyvalue.value.common.ComponentIndexType
+import dji.v5.common.utils.GeoidManager
 import dji.v5.utils.common.LogUtils
 import dji.v5.utils.common.PermissionUtil
 import dji.v5.utils.common.StringUtils
+import dji.v5.ux.core.communication.DefaultGlobalPreferences
+import dji.v5.ux.core.communication.GlobalPreferencesManager
+import dji.v5.ux.core.util.UxSharedPreferencesUtil
+import dji.v5.ux.core.widget.fpv.FPVWidget
+import dji.v5.ux.sample.showcase.defaultlayout.DefaultLayoutActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -31,7 +38,7 @@ import kotlinx.android.synthetic.main.activity_main.*
  *
  * Copyright (c) 2022, DJI All Rights Reserved.
  */
-abstract class DJIMainActivity : AppCompatActivity() {
+class DJIMainActivity : AppCompatActivity() {
 
     val tag: String = LogUtils.getTag(this)
     private val permissionArray = arrayListOf(
@@ -59,10 +66,20 @@ abstract class DJIMainActivity : AppCompatActivity() {
     private val msdkManagerVM: MSDKManagerVM by globalViewModels()
     private val handler: Handler = Handler(Looper.getMainLooper())
     private val disposable = CompositeDisposable()
+//    private val primaryFpvWidget = findViewById<FPVWidget?>(R.id.widget_primary_fpv)
 
-    abstract fun prepareUxActivity()
+    fun prepareUxActivity() {
+        UxSharedPreferencesUtil.initialize(this)
+        GlobalPreferencesManager.initialize(DefaultGlobalPreferences(this))
+        GeoidManager.getInstance().init(this)
 
-    abstract fun prepareTestingToolsActivity()
+        enableDefaultLayout(DefaultLayoutActivity::class.java)
+
+//        primaryFpvWidget.updateVideoSource(ComponentIndexType.LEFT_OR_MAIN)
+
+    }
+
+    fun prepareTestingToolsActivity() {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,18 +129,18 @@ abstract class DJIMainActivity : AppCompatActivity() {
             text_view_product_name.text = StringUtils.getResStr(R.string.product_name, it.productType.name)
             text_view_package_product_category.text = StringUtils.getResStr(R.string.package_product_category, it.packageProductCategory)
             text_view_is_debug.text = StringUtils.getResStr(R.string.is_sdk_debug, it.isDebug)
-            text_core_info.text = it.coreInfo.toString()
+//            text_core_info.text = it.coreInfo.toString()
         }
 
-        icon_sdk_forum.setOnClickListener {
-            Helper.startBrowser(this, StringUtils.getResStr(R.string.sdk_forum_url))
-        }
-        icon_release_node.setOnClickListener {
-            Helper.startBrowser(this, StringUtils.getResStr(R.string.release_node_url))
-        }
-        icon_tech_support.setOnClickListener {
-            Helper.startBrowser(this, StringUtils.getResStr(R.string.tech_support_url))
-        }
+//        icon_sdk_forum.setOnClickListener {
+//            Helper.startBrowser(this, StringUtils.getResStr(R.string.sdk_forum_url))
+//        }
+//        icon_release_node.setOnClickListener {
+//            Helper.startBrowser(this, StringUtils.getResStr(R.string.release_node_url))
+//        }
+//        icon_tech_support.setOnClickListener {
+//            Helper.startBrowser(this, StringUtils.getResStr(R.string.tech_support_url))
+//        }
         view_base_info.setOnClickListener {
             baseMainActivityVm.doPairing {
                 showToast(it)
@@ -175,13 +192,13 @@ abstract class DJIMainActivity : AppCompatActivity() {
         enableShowCaseButton(default_layout_button, cl)
     }
 
-    fun <T> enableWidgetList(cl: Class<T>) {
-        enableShowCaseButton(widget_list_button, cl)
-    }
-
-    fun <T> enableTestingTools(cl: Class<T>) {
-        enableShowCaseButton(testing_tool_button, cl)
-    }
+//    fun <T> enableWidgetList(cl: Class<T>) {
+//        enableShowCaseButton(widget_list_button, cl)
+//    }
+//
+//    fun <T> enableTestingTools(cl: Class<T>) {
+//        enableShowCaseButton(testing_tool_button, cl)
+//    }
 
     private fun <T> enableShowCaseButton(view: View, cl: Class<T>) {
         view.isEnabled = true

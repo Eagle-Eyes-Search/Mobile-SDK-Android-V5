@@ -15,18 +15,18 @@ import dji.v5.ux.sample.showcase.widgetlist.WidgetsActivity
  *
  * Copyright (c) 2022, DJI All Rights Reserved.
  */
-class DJIAircraftMainActivity : DJIMainActivity() {
-
-    override fun prepareUxActivity() {
-        UxSharedPreferencesUtil.initialize(this)
-        GlobalPreferencesManager.initialize(DefaultGlobalPreferences(this))
-        GeoidManager.getInstance().init(this)
-
-        enableDefaultLayout(DefaultLayoutActivity::class.java)
-        enableWidgetList(WidgetsActivity::class.java)
-    }
-
-    override fun prepareTestingToolsActivity() {
-        enableTestingTools(AircraftTestingToolsActivity::class.java)
-    }
-}
+//class DJIAircraftMainActivity : DJIMainActivity() {
+//
+////    override fun prepareUxActivity() {
+////        UxSharedPreferencesUtil.initialize(this)
+////        GlobalPreferencesManager.initialize(DefaultGlobalPreferences(this))
+////        GeoidManager.getInstance().init(this)
+////
+////        enableDefaultLayout(DefaultLayoutActivity::class.java)
+//////        enableWidgetList(WidgetsActivity::class.java)
+////    }
+//
+////    override fun prepareTestingToolsActivity() {
+//////        enableTestingTools(AircraftTestingToolsActivity::class.java)
+////    }
+//}
