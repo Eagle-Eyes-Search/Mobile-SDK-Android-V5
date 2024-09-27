@@ -1,20 +1,17 @@
 package dji.simpleV5
 
-import android.Manifest
+import PermissionHelper
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import dji.sampleV5.aircraft.R
 import dji.simpleV5.utils.*
 import dji.v5.common.utils.GeoidManager
 import dji.v5.utils.common.LogUtils
-import dji.v5.utils.common.PermissionUtil
 import dji.v5.utils.common.StringUtils
 import dji.v5.ux.core.communication.DefaultGlobalPreferences
 import dji.v5.ux.core.communication.GlobalPreferencesManager
@@ -31,7 +28,7 @@ class DJIMainActivity : AppCompatActivity() {
     private val handler: Handler = Handler(Looper.getMainLooper())
     private val disposable = CompositeDisposable()
 
-    private val permissionArray = getPermissionArray()
+    private lateinit var permissionHandler: PermissionHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +36,7 @@ class DJIMainActivity : AppCompatActivity() {
 
         if (shouldFinishActivity()) return
 
+        // Set full-screen view
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
                 View.SYSTEM_UI_FLAG_FULLSCREEN or
@@ -46,17 +44,17 @@ class DJIMainActivity : AppCompatActivity() {
 
         initMSDKInfoView()
         observeSDKManager()
-        checkPermissionAndRequest()
-    }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (checkPermission()) handleAfterPermissionPermitted()
+        // Initialize the PermissionHandler
+        permissionHandler = PermissionHelper(this)
+
+        // Check and request permissions
+        permissionHandler.checkAndRequestPermissions()
     }
 
     override fun onResume() {
         super.onResume()
-        if (checkPermission()) handleAfterPermissionPermitted()
+        permissionHandler.checkAndRequestPermissions()
     }
 
     override fun onDestroy() {
@@ -70,10 +68,6 @@ class DJIMainActivity : AppCompatActivity() {
             finish()
             true
         } else false
-    }
-
-    private fun handleAfterPermissionPermitted() {
-        prepareTestingToolsActivity()
     }
 
     private fun initMSDKInfoView() {
@@ -134,24 +128,6 @@ class DJIMainActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkPermissionAndRequest() {
-        if (!checkPermission()) requestPermission()
-    }
-
-    private fun checkPermission(): Boolean {
-        return permissionArray.all { PermissionUtil.isPermissionGranted(this, it) }
-    }
-
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { result ->
-        result.entries.forEach { if (!it.value) requestPermission() }
-    }
-
-    private fun requestPermission() {
-        requestPermissionLauncher.launch(permissionArray.toArray(arrayOf()))
-    }
-
     private fun prepareUxActivity() {
         UxSharedPreferencesUtil.initialize(this)
         GlobalPreferencesManager.initialize(DefaultGlobalPreferences(this))
@@ -159,27 +135,4 @@ class DJIMainActivity : AppCompatActivity() {
         enableDefaultLayout(SimplePilotingActivity::class.java)
     }
 
-    private fun prepareTestingToolsActivity() {}
-
-    private fun getPermissionArray(): ArrayList<String> {
-        return arrayListOf(
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.KILL_BACKGROUND_PROCESSES,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-        ).apply {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                addAll(listOf(
-                    Manifest.permission.READ_MEDIA_IMAGES,
-                    Manifest.permission.READ_MEDIA_VIDEO,
-                    Manifest.permission.READ_MEDIA_AUDIO
-                ))
-            } else {
-                addAll(listOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ))
-            }
-        }
-    }
 }
