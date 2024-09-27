@@ -1,7 +1,6 @@
 package dji.simpleV5
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import dji.sampleV5.aircraft.R
 import dji.sdk.keyvalue.value.common.ComponentIndexType
 import dji.v5.ux.core.widget.fpv.FPVWidget
 

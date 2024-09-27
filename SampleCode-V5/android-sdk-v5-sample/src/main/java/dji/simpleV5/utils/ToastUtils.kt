@@ -3,6 +3,7 @@ package dji.simpleV5.utils
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import dji.v5.utils.common.ContextUtil
 import java.lang.ref.WeakReference
 
@@ -36,4 +37,21 @@ object ToastUtils {
         }
     }
 
+}
+
+object DJIToastUtil {
+    var dJIToastLD: MutableLiveData<DJIToastResult>? = null
+}
+
+class DJIToastResult(var isSuccess: Boolean, var msg: String? = null) {
+
+    companion object {
+        fun success(msg: String? = null): DJIToastResult {
+            return DJIToastResult(true, "success ${msg ?: ""}")
+        }
+
+        fun failed(msg: String): DJIToastResult {
+            return DJIToastResult(false, msg)
+        }
+    }
 }

@@ -1,8 +1,6 @@
 package dji.simpleV5.utils
 
 import androidx.lifecycle.MutableLiveData
-import dji.sampleV5.aircraft.R
-import dji.sampleV5.aircraft.models.DJIViewModel
 import dji.sdk.keyvalue.key.RemoteControllerKey
 import dji.sdk.keyvalue.value.remotecontroller.PairingState
 import dji.v5.et.action
@@ -10,6 +8,7 @@ import dji.v5.et.create
 import dji.v5.et.get
 import dji.v5.manager.SDKManager
 import dji.v5.utils.common.StringUtils
+import dji.simpleV5.R
 
 /**
  * Class Description

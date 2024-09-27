@@ -8,7 +8,6 @@ import android.os.Looper
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import dji.sampleV5.aircraft.R
 import dji.simpleV5.utils.*
 import dji.v5.common.utils.GeoidManager
 import dji.v5.utils.common.LogUtils

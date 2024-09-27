@@ -1,7 +1,6 @@
-package dji.sampleV5.aircraft.models
+package dji.simpleV5.utils
 
 import androidx.lifecycle.ViewModel
-import dji.sampleV5.aircraft.util.DJIToastUtil
 import dji.v5.utils.common.LogUtils
 
 /**

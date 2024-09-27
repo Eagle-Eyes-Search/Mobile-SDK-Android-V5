@@ -1,6 +1,7 @@
-package dji.sampleV5.aircraft.data
+package dji.simpleV5.utils
 
 import dji.sdk.keyvalue.value.product.ProductType
+import dji.simpleV5.utils.data.DEFAULT_STR
 import dji.v5.common.register.PackageProductCategory
 import dji.v5.utils.inner.SDKConfig
 

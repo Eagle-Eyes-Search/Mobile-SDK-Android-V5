@@ -1,4 +1,4 @@
-package dji.sampleV5.aircraft.data
+package dji.simpleV5.utils.data
 
 const val DEFAULT_STR = "N/A"
 const val DEFAULT_RES_ID = -1

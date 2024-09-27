@@ -1,12 +1,9 @@
 package dji.simpleV5.utils
 
 import androidx.lifecycle.MutableLiveData
-import dji.sampleV5.aircraft.data.DEFAULT_STR
-import dji.sampleV5.aircraft.data.MSDKInfo
-import dji.sampleV5.aircraft.data.NO_NETWORK_STR
-import dji.sampleV5.aircraft.data.ONLINE_STR
-import dji.sampleV5.aircraft.models.DJIViewModel
-import dji.sampleV5.aircraft.models.MSDKInfoModel
+import dji.simpleV5.utils.data.DEFAULT_STR
+import dji.simpleV5.utils.data.NO_NETWORK_STR
+import dji.simpleV5.utils.data.ONLINE_STR
 import dji.sdk.keyvalue.key.FlightControllerKey
 import dji.sdk.keyvalue.key.ProductKey
 import dji.v5.et.create

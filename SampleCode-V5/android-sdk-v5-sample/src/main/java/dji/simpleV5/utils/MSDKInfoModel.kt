@@ -1,4 +1,4 @@
-package dji.sampleV5.aircraft.models
+package dji.simpleV5.utils
 
 import dji.v5.common.register.PackageProductCategory
 import dji.v5.utils.inner.SDKConfig
