@@ -31,12 +31,14 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         <activity
-            android:name="dji.SimplePilotingActivity"
-            android:exported="false" />
+            android:name="dji.sampleV5.aircraft.SimplePilotingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
 
         <meta-data
             android:name="com.dji.sdk.API_KEY"
-            android:value="${API_KEY}" /> <!-- Maplibre Token -->
+            android:value="${API_KEY}" />
         <meta-data
             android:name="com.dji.mapkit.maplibre.apikey"
             android:value="${MAPLIBRE_TOKEN}" />

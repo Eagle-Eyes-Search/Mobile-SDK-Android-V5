@@ -15,9 +15,7 @@ import dji.sampleV5.aircraft.models.BaseMainActivityVm
 import dji.sampleV5.aircraft.models.MSDKInfoVm
 import dji.sampleV5.aircraft.models.MSDKManagerVM
 import dji.sampleV5.aircraft.models.globalViewModels
-import dji.sampleV5.aircraft.util.Helper
 import dji.sampleV5.aircraft.util.ToastUtils
-import dji.sdk.keyvalue.value.common.ComponentIndexType
 import dji.v5.common.utils.GeoidManager
 import dji.v5.utils.common.LogUtils
 import dji.v5.utils.common.PermissionUtil
@@ -25,8 +23,6 @@ import dji.v5.utils.common.StringUtils
 import dji.v5.ux.core.communication.DefaultGlobalPreferences
 import dji.v5.ux.core.communication.GlobalPreferencesManager
 import dji.v5.ux.core.util.UxSharedPreferencesUtil
-import dji.v5.ux.core.widget.fpv.FPVWidget
-import dji.v5.ux.sample.showcase.defaultlayout.DefaultLayoutActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -73,7 +69,7 @@ class DJIMainActivity : AppCompatActivity() {
         GlobalPreferencesManager.initialize(DefaultGlobalPreferences(this))
         GeoidManager.getInstance().init(this)
 
-        enableDefaultLayout(DefaultLayoutActivity::class.java)
+        enableDefaultLayout(SimplePilotingActivity::class.java)
 
 //        primaryFpvWidget.updateVideoSource(ComponentIndexType.LEFT_OR_MAIN)
 

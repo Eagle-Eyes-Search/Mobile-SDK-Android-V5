@@ -1,10 +1,8 @@
-package dji.simpleV5
-
+package dji.sampleV5.aircraft
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import dji.v5.ux.R
-import dji.v5.ux.core.widget.fpv.FPVWidget
 import dji.sdk.keyvalue.value.common.ComponentIndexType
+import dji.v5.ux.core.widget.fpv.FPVWidget
 
 class SimplePilotingActivity : AppCompatActivity() {
 
