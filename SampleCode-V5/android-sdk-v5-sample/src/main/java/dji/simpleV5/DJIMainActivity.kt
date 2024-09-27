@@ -25,6 +25,19 @@ import dji.v5.ux.core.communication.DefaultGlobalPreferences
 import dji.v5.ux.core.communication.GlobalPreferencesManager
 import dji.v5.ux.core.util.UxSharedPreferencesUtil
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -241,4 +254,79 @@ class DJIMainActivity : AppCompatActivity() {
         handler.removeCallbacksAndMessages(null)
         disposable.dispose()
     }
+}
+
+
+@Composable
+fun MainContent() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
+    ) {
+        // Info Panel Section
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.LightGray)
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "SDK Version", // Replace with actual SDK version
+                color = Color.White,
+                fontSize = 14.sp,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Text(
+                text = "Package Product Category",
+                color = Color.White,
+                fontSize = 14.sp,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Text(
+                text = "Unregistered",
+                color = Color.White,
+                fontSize = 14.sp,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Text(
+                text = "Product Name",
+                color = Color.White,
+                fontSize = 14.sp,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Text(
+                text = "Is SDK Debug",
+                color = Color.White,
+                fontSize = 14.sp,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+        }
+
+        // Scrollable button section (Case Panel)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 2.dp)
+                .verticalScroll(rememberScrollState())
+                .background(Color.LightGray)
+                .padding(8.dp)
+        ) {
+            Button(
+                onClick = { /* Handle Enter Cockpit click */ },
+                enabled = false,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                Text(text = "Enter Cockpit")
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewMainContent() {
+    MainContent()
 }
