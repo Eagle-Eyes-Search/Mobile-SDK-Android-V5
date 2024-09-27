@@ -11,7 +11,7 @@ import dji.sampleV5.aircraft.data.DeviceLockStatus
 import dji.sampleV5.aircraft.data.ModifyPasswordBean
 import dji.sampleV5.aircraft.models.SecurityCodeVM
 import dji.sampleV5.aircraft.util.Helper
-import dji.sampleV5.aircraft.util.ToastUtils
+import dji.simpleV5.utils.ToastUtils
 import dji.sdk.keyvalue.value.flightcontroller.AccessLockerDeviceType
 import dji.v5.utils.common.JsonUtil
 import dji.v5.utils.common.StringUtils

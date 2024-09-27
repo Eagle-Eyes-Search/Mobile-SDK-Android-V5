@@ -1,4 +1,4 @@
-package dji.sampleV5.aircraft
+package dji.simpleV5
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -11,11 +11,12 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import dji.sampleV5.aircraft.models.BaseMainActivityVm
-import dji.sampleV5.aircraft.models.MSDKInfoVm
-import dji.sampleV5.aircraft.models.MSDKManagerVM
-import dji.sampleV5.aircraft.models.globalViewModels
-import dji.sampleV5.aircraft.util.ToastUtils
+import dji.sampleV5.aircraft.R
+import dji.simpleV5.utils.BaseMainActivityVm
+import dji.simpleV5.utils.MSDKInfoVm
+import dji.simpleV5.utils.MSDKManagerVM
+import dji.simpleV5.utils.ToastUtils
+import dji.simpleV5.utils.globalViewModels
 import dji.v5.common.utils.GeoidManager
 import dji.v5.utils.common.LogUtils
 import dji.v5.utils.common.PermissionUtil

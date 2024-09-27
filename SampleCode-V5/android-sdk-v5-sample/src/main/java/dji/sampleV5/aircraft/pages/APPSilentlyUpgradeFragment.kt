@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import dji.sampleV5.aircraft.R
 import dji.sampleV5.aircraft.models.APPSilentlyUpgradeVM
-import dji.sampleV5.aircraft.models.MSDKCrashLogVM
-import dji.sampleV5.aircraft.util.ToastUtils
 import kotlinx.android.synthetic.main.frag_app_silently_upgrade_page.btn_install_test_app
 import kotlinx.android.synthetic.main.frag_app_silently_upgrade_page.btn_silently_upgrade_package
-import kotlinx.android.synthetic.main.frag_log_info_page.*
+
 class APPSilentlyUpgradeFragment : DJIFragment() {
     private val vm: APPSilentlyUpgradeVM by activityViewModels()
 

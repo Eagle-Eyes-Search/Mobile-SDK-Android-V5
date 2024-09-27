@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
 import dji.sampleV5.aircraft.R
 import dji.sampleV5.aircraft.models.PayLoadDataVM
-import dji.sampleV5.aircraft.util.ToastUtils
+import dji.simpleV5.utils.ToastUtils
 import dji.v5.manager.aircraft.payload.PayloadIndexType
 import dji.v5.utils.common.LogUtils
 import kotlinx.android.synthetic.main.frag_payload_data_page.btn_send_data_to_payload

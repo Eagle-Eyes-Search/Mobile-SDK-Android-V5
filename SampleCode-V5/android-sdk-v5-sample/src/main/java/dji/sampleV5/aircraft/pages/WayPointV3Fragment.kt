@@ -12,7 +12,6 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.IntDef
 import androidx.fragment.app.activityViewModels
 import dji.sampleV5.aircraft.R
 import dji.sampleV5.aircraft.models.WayPointV3VM
@@ -74,7 +73,6 @@ import kotlinx.android.synthetic.main.view_mission_setting_home.*
 
 import android.widget.EditText
 import com.dji.wpmzsdk.common.data.HeightMode
-import dji.sampleV5.aircraft.BuildConfig
 import dji.sdk.keyvalue.key.FlightControllerKey
 import dji.sdk.keyvalue.key.KeyTools
 import dji.sdk.keyvalue.value.common.LocationCoordinate2D
@@ -86,7 +84,7 @@ import dji.v5.manager.aircraft.waypoint3.model.BreakPointInfo
 import dji.v5.ux.accessory.DescSpinnerCell
 import dji.v5.ux.mapkit.core.models.annotations.DJIMarker
 import kotlinx.android.synthetic.main.dialog_add_waypoint.view.*
-import dji.sampleV5.aircraft.util.ToastUtils
+import dji.simpleV5.utils.ToastUtils
 import dji.v5.manager.aircraft.waypoint3.model.RecoverActionType
 
 

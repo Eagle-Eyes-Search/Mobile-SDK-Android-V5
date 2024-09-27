@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import dji.sampleV5.aircraft.R
 import dji.sampleV5.aircraft.data.MEDIA_FILE_DETAILS_STR
 import dji.sampleV5.aircraft.models.MediaVM
-import dji.sampleV5.aircraft.util.ToastUtils
+import dji.simpleV5.utils.ToastUtils
 import dji.sdk.keyvalue.value.camera.CameraStorageLocation
 import dji.sdk.keyvalue.value.common.ComponentIndexType
 import dji.v5.common.callback.CommonCallbacks

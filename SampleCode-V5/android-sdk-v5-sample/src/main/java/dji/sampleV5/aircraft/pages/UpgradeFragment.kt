@@ -12,7 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import dji.sampleV5.aircraft.R
 import dji.sampleV5.aircraft.models.UpgradeVM
-import dji.sampleV5.aircraft.util.ToastUtils
+import dji.simpleV5.utils.ToastUtils
 import dji.v5.common.callback.CommonCallbacks
 import dji.v5.common.error.IDJIError
 import dji.v5.manager.aircraft.upgrade.UpgradeProgressState

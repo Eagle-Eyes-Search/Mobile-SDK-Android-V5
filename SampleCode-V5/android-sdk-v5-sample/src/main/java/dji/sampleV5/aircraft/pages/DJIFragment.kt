@@ -12,7 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import dji.sampleV5.aircraft.R
 import dji.sampleV5.aircraft.data.MAIN_FRAGMENT_PAGE_TITLE
-import dji.sampleV5.aircraft.models.MSDKInfoVm
+import dji.simpleV5.utils.MSDKInfoVm
 import dji.sampleV5.aircraft.util.wheel.PopupNumberPicker
 import dji.sampleV5.aircraft.util.wheel.PopupNumberPickerDouble
 import dji.sampleV5.aircraft.util.wheel.PopupNumberPickerPosition

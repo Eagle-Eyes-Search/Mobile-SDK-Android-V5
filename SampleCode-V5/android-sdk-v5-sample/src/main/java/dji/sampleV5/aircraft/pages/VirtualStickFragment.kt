@@ -19,7 +19,7 @@ import dji.v5.common.callback.CommonCallbacks
 import dji.v5.common.error.IDJIError
 import dji.v5.manager.aircraft.virtualstick.Stick
 import dji.v5.utils.common.JsonUtil
-import dji.sampleV5.aircraft.util.ToastUtils
+import dji.simpleV5.utils.ToastUtils
 import kotlinx.android.synthetic.main.frag_virtual_stick_page.*
 import kotlin.math.abs
 

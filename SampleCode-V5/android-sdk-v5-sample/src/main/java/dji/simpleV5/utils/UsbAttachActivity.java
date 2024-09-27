@@ -1,10 +1,12 @@
-package dji.sampleV5.aircraft;
+package dji.simpleV5.utils;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import dji.simpleV5.DJIMainActivity;
 
 public class UsbAttachActivity extends AppCompatActivity {
 

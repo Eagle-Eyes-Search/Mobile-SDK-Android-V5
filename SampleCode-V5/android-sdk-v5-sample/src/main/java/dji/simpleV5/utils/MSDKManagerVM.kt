@@ -1,4 +1,4 @@
-package dji.sampleV5.aircraft.models
+package dji.simpleV5.utils
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData

@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dji.sampleV5.aircraft.R
 import dji.sampleV5.aircraft.keyvalue.KeyItemHelper.processSubListLogic
-import dji.sampleV5.aircraft.util.ToastUtils.showToast
+import dji.simpleV5.utils.ToastUtils.showToast
 import dji.sampleV5.aircraft.util.Util
 import dji.sdk.keyvalue.converter.EmptyValueConverter
 import dji.sdk.keyvalue.key.CameraKey

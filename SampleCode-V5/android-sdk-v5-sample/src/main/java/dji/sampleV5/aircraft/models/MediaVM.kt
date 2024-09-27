@@ -1,7 +1,6 @@
 package dji.sampleV5.aircraft.models
 
 import androidx.lifecycle.MutableLiveData
-import dji.sampleV5.aircraft.R
 import dji.sampleV5.aircraft.data.DJIToastResult
 import dji.sdk.keyvalue.key.CameraKey
 import dji.sdk.keyvalue.key.KeyTools
@@ -18,15 +17,12 @@ import dji.v5.manager.KeyManager
 import dji.v5.manager.datacenter.MediaDataCenter
 import dji.v5.manager.datacenter.media.*
 import dji.v5.utils.common.LogUtils
-import dji.sampleV5.aircraft.util.ToastUtils
+import dji.simpleV5.utils.ToastUtils
 import dji.sdk.keyvalue.value.camera.CameraStorageLocation
 import dji.sdk.keyvalue.value.common.EmptyMsg
 import dji.v5.utils.common.ContextUtil
 import dji.v5.utils.common.DiskUtil
 import dji.v5.utils.common.StringUtils
-import io.reactivex.rxjava3.annotations.Nullable
-import kotlinx.android.synthetic.main.layout_media_play_download_progress.progressBar
-import kotlinx.android.synthetic.main.layout_media_play_download_progress.progressInfo
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream

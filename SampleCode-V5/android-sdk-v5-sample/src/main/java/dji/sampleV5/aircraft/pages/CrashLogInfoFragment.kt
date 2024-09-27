@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import dji.sampleV5.aircraft.R
 import dji.sampleV5.aircraft.models.MSDKCrashLogVM
-import dji.sampleV5.aircraft.util.ToastUtils
+import dji.simpleV5.utils.ToastUtils
 import kotlinx.android.synthetic.main.frag_log_info_page.*
 
 /**

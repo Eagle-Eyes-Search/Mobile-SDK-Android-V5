@@ -1,4 +1,4 @@
-package dji.sampleV5.aircraft.util
+package dji.simpleV5.utils
 
 import android.os.Handler
 import android.os.Looper

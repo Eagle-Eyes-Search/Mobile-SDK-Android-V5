@@ -10,7 +10,7 @@ import dji.sampleV5.aircraft.R
 import dji.sampleV5.aircraft.data.QuickTestConfig
 import dji.sampleV5.aircraft.models.SimulatorVM
 import dji.sampleV5.aircraft.util.Helper
-import dji.sampleV5.aircraft.util.ToastUtils
+import dji.simpleV5.utils.ToastUtils
 import dji.sdk.keyvalue.value.common.LocationCoordinate2D
 import dji.v5.common.callback.CommonCallbacks
 import dji.v5.common.error.IDJIError

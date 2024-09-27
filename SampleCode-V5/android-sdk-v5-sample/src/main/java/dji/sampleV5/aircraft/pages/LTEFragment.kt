@@ -13,7 +13,7 @@ import dji.sampleV5.aircraft.util.Helper
 import dji.v5.manager.aircraft.lte.LTELinkType
 import dji.v5.manager.aircraft.lte.LTEPrivatizationServerInfo
 import dji.v5.utils.common.JsonUtil
-import dji.sampleV5.aircraft.util.ToastUtils
+import dji.simpleV5.utils.ToastUtils
 import kotlinx.android.synthetic.main.frag_lte_page.*
 
 /**

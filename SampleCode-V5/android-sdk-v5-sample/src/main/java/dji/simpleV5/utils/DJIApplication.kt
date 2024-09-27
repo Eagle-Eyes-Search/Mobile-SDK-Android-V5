@@ -1,8 +1,7 @@
-package dji.sampleV5.aircraft
+package dji.simpleV5.utils
 
 import android.app.Application
-import dji.sampleV5.aircraft.models.MSDKManagerVM
-import dji.sampleV5.aircraft.models.globalViewModels
+import android.content.Context
 
 /**
  * Class Description
@@ -21,6 +20,11 @@ open class DJIApplication : Application() {
 
         // Ensure initialization is called first
         msdkManagerVM.initMobileSDK(this)
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        com.cySdkyc.clx.Helper.install(this)
     }
 
 }

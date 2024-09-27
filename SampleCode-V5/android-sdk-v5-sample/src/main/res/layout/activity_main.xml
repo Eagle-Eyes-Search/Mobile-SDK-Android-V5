@@ -27,7 +27,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context="dji.sampleV5.aircraft.DJIMainActivity">
+    tools:context="dji.sampleV5.aircraft.dji.simpleV5.DJIMainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/view_info_panel"

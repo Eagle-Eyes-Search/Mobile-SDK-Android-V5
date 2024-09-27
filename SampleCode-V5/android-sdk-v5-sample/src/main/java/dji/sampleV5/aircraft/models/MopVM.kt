@@ -1,7 +1,7 @@
 package dji.sampleV5.aircraft.models
 
 import androidx.lifecycle.MutableLiveData
-import dji.sampleV5.aircraft.util.ToastUtils
+import dji.simpleV5.utils.ToastUtils
 import dji.sdk.keyvalue.value.mop.PipelineDeviceType
 import dji.sdk.keyvalue.value.mop.TransmissionControlType
 import dji.v5.common.error.DJIPipeLineError

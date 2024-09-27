@@ -20,7 +20,7 @@ import dji.v5.manager.datacenter.media.MediaFile
 import dji.v5.manager.datacenter.media.VideoPlayState
 import dji.v5.utils.common.LogUtils
 import kotlinx.android.synthetic.main.video_play_page.*
-import dji.sampleV5.aircraft.util.ToastUtils
+import dji.simpleV5.utils.ToastUtils
 
 
 class VideoPlayFragment : DJIFragment(), SurfaceHolder.Callback, View.OnClickListener {

@@ -23,7 +23,7 @@
         android:required="true" />
 
     <application
-        android:name=".DJIAircraftApplication"
+        android:name="dji.simpleV5.utils.DJIApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_main"
         android:label="@string/app_name_aircraft"
@@ -31,7 +31,7 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         <activity
-            android:name="dji.sampleV5.aircraft.SimplePilotingActivity"
+            android:name="dji.simpleV5.SimplePilotingActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             />
@@ -44,7 +44,7 @@
             android:value="${MAPLIBRE_TOKEN}" />
 
         <activity
-            android:name=".DJIMainActivity"
+            android:name="dji.simpleV5.DJIMainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="true"
             android:screenOrientation="landscape"
@@ -56,7 +56,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UsbAttachActivity"
+            android:name="dji.simpleV5.utils.UsbAttachActivity"
             android:exported="true"
             android:theme="@style/translucent_theme">
             <intent-filter>
@@ -67,24 +67,6 @@
                 android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"
                 android:resource="@xml/accessory_filter" />
         </activity>
-        <activity
-            android:name="dji.v5.ux.sample.showcase.defaultlayout.DefaultLayoutActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:exported="false"
-            android:screenOrientation="landscape"
-            android:theme="@style/full_screen_theme" />
-        <activity
-            android:name="dji.v5.ux.sample.showcase.widgetlist.WidgetsActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:exported="false"
-            android:screenOrientation="landscape"
-            android:theme="@style/full_screen_theme" />
-        <activity
-            android:name=".AircraftTestingToolsActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:exported="false"
-            android:screenOrientation="landscape"
-            android:theme="@style/full_screen_theme" />
     </application>
 
 </manifest>
