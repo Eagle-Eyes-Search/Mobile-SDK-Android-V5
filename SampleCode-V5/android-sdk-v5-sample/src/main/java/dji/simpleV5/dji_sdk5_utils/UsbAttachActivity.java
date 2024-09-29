@@ -6,14 +6,14 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import dji.simpleV5.DJIMainActivity;
+import dji.simpleV5.ConnectionActivity;
 
 public class UsbAttachActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = new Intent(this, DJIMainActivity.class);
+        Intent intent = new Intent(this, ConnectionActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

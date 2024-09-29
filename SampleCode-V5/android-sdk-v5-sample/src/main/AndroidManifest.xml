@@ -44,7 +44,7 @@
             android:value="${MAPLIBRE_TOKEN}" />
 
         <activity
-            android:name="dji.simpleV5.DJIMainActivity"
+            android:name="dji.simpleV5.ConnectionActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="true"
             android:screenOrientation="landscape"

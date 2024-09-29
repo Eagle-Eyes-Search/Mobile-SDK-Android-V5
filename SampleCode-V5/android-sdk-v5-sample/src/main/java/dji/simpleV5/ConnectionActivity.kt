@@ -18,7 +18,7 @@ import dji.v5.ux.core.util.UxSharedPreferencesUtil
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 
-class DJIMainActivity : AppCompatActivity() {
+class ConnectionActivity : AppCompatActivity() {
 
     private val tag: String = LogUtils.getTag(this)
     private val baseMainActivityVm: BaseMainActivityVm by viewModels()
@@ -70,11 +70,15 @@ class DJIMainActivity : AppCompatActivity() {
     }
 
     private fun initMSDKInfoView() {
+
+
+
         msdkInfoVm.msdkInfo.observe(this) {
-            text_view_version.text = StringUtils.getResStr(R.string.sdk_version, "${it.SDKVersion} ${it.buildVer}")
-            text_view_product_name.text = StringUtils.getResStr(R.string.product_name, it.productType.name)
-            text_view_package_product_category.text = StringUtils.getResStr(R.string.package_product_category, it.packageProductCategory)
-            text_view_is_debug.text = StringUtils.getResStr(R.string.is_sdk_debug, it.isDebug)
+            val summaryText = "SDK Version: ${msdkInfoVm.msdkInfo.value?.SDKVersion} ${msdkInfoVm.msdkInfo.value?.buildVer}" +
+                    "\nProduct Name: ${msdkInfoVm.msdkInfo.value?.productType?.name}" +
+                    "\nPackage Product Category: ${msdkInfoVm.msdkInfo.value?.packageProductCategory}" +
+                    "\nIs SDK Debug: ${msdkInfoVm.msdkInfo.value?.isDebug}"
+            text_view_msdk_info.text = summaryText
         }
 
         view_base_info.setOnClickListener {
