@@ -6,22 +6,27 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import androidx.activity.viewModels
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import dji.simpleV5.dji_sdk5_utils.*
-import dji.v5.common.utils.GeoidManager
-import dji.v5.manager.interfaces.ISDKManager
-import dji.v5.utils.common.LogUtils
-import dji.v5.utils.common.StringUtils
-import dji.v5.ux.core.communication.DefaultGlobalPreferences
-import dji.v5.ux.core.communication.GlobalPreferencesManager
-import dji.v5.ux.core.util.UxSharedPreferencesUtil
+import dji.simpleV5.dji_sdk5_utils.MSDKManagerVM2
+import dji.simpleV5.dji_sdk5_utils.globalViewModels
+//import dji.v5.utils.common.LogUtils
+//import dji.v5.utils.common.StringUtils
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 
+
+/*
+This is an adaptation od DJIMainActivity from the sample app
+https://github.com/dji-sdk/Mobile-SDK-Android-V5/blob/dev-sdk-main/SampleCode-V5/android-sdk-v5-sample/src/main/java/dji/sampleV5/aircraft/DJIMainActivity.kt
+
+DJI-specific functionality has been factored out to MSDKManagerVM2.kt
+
+ */
+
 class ConnectionActivity : AppCompatActivity() {
 
-    private val tag: String = LogUtils.getTag(this)
+    private val tag: String = "ConnectionActivity"
 //    private val baseMainActivityVm: BaseMainActivityVm by viewModels()
 //    private val msdkInfoVm: MSDKInfoVm by viewModels()
 //    private val msdkManagerVM: ISDKManager by globalViewModels<MSDKManagerVM2>()
@@ -89,16 +94,16 @@ class ConnectionActivity : AppCompatActivity() {
 //    }
 
     private fun observeSDKManager() {
-        msdkManagerVM.registrationStatus.observe(this) { resultPair ->
-            val statusText = if (resultPair.first) {
+        msdkManagerVM.registrationStatus.observe(this) { (isRegistered, statusString) ->
+            val statusText = if (isRegistered) {
                 showToast("Register Success")
 //                StringUtils.getResStr(this, R.string.registered).also { msdkInfoVm.initListener() }
             } else {
-                showToast("Register Failure: ${resultPair.second}")
+                showToast("Register Failure: ${isRegistered}")
 //                StringUtils.getResStr(this, R.string.unregistered)
             }
-            text_view_registered.text = StringUtils.getResStr(R.string.registration_status, statusText)
-            if (resultPair.first) handler.postDelayed({ prepareUxActivity() }, 5000)
+            text_view_registered.text = statusString
+            if (isRegistered) handler.postDelayed({ openCockpitDoor() }, 5000)
         }
 
         msdkManagerVM.productConnectionState.observe(this) {
@@ -119,25 +124,28 @@ class ConnectionActivity : AppCompatActivity() {
     }
 
     private fun showToast(content: String) {
-        ToastUtils.showToast(content)
+        Toast.makeText(this, content, Toast.LENGTH_SHORT).show()
     }
 
-    private fun <T> enableDefaultLayout(cl: Class<T>) {
-        enableShowCaseButton(default_layout_button, cl)
-    }
+//    private fun <T> enableDefaultLayout(cl: Class<T>) {
+//        enableShowCaseButton(default_layout_button, cl)
+//    }
 
-    private fun <T> enableShowCaseButton(view: View, cl: Class<T>) {
-        view.isEnabled = true
-        view.setOnClickListener {
-            Intent(this, cl).also { startActivity(it) }
+//    private fun <T> enableShowCaseButton(view: View, cl: Class<T>) {
+//        view.isEnabled = true
+//        view.setOnClickListener {
+//            Intent(this, cl).also { startActivity(it) }
+//        }
+//    }
+
+    private fun openCockpitDoor() {
+        default_layout_button.isEnabled = true
+        default_layout_button.setOnClickListener {
+//            showToast("Opening Cockpit Door...")
+            it.setOnClickListener {
+                Intent(this, SimplePilotingActivity::class.java).also { startActivity(it) }
+            }
         }
-    }
-
-    private fun prepareUxActivity() {
-        UxSharedPreferencesUtil.initialize(this)
-        GlobalPreferencesManager.initialize(DefaultGlobalPreferences(this))
-        GeoidManager.getInstance().init(this)
-        enableDefaultLayout(SimplePilotingActivity::class.java)
     }
 
 }

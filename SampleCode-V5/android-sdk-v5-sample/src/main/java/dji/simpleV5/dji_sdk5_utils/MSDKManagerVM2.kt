@@ -6,8 +6,12 @@ import androidx.lifecycle.ViewModel
 import dji.simpleV5.IMSDKManager
 import dji.v5.common.error.IDJIError
 import dji.v5.common.register.DJISDKInitEvent
+import dji.v5.common.utils.GeoidManager
 import dji.v5.manager.SDKManager
 import dji.v5.manager.interfaces.SDKManagerCallback
+import dji.v5.ux.core.communication.DefaultGlobalPreferences
+import dji.v5.ux.core.communication.GlobalPreferencesManager
+import dji.v5.ux.core.util.UxSharedPreferencesUtil
 
 class MSDKManagerVM2 : ViewModel(), IMSDKManager {
     // The data is held in livedata mode, but you can also save the results of the sdk callbacks any way you like.
@@ -26,12 +30,19 @@ class MSDKManagerVM2 : ViewModel(), IMSDKManager {
     }
 
 
-    fun initMobileSDK(appContext: Context) {
+    override fun initMobileSDK(appContext: Context) {
         // Initialize and set the sdk callback, which is held internally by the sdk until destroy() is called
         SDKManager.getInstance().init(appContext, object : SDKManagerCallback {
             override fun onRegisterSuccess() {
                 lvRegisterState.postValue(Pair(true, null))
                 registrationStatus.postValue(Pair(true, "Registration Successful"))
+
+                // Ok - initialize a bunch of stuff - God only knows what this does - got it from the sample:
+                // https://github.com/dji-sdk/Mobile-SDK-Android-V5/blob/dbbd5ad95347039ba48e04011f2531cd89c9d1d7/SampleCode-V5/android-sdk-v5-sample/src/main/java/dji/sampleV5/aircraft/DJIAircraftMainActivity.kt#L20
+                UxSharedPreferencesUtil.initialize(appContext)
+                GlobalPreferencesManager.initialize(DefaultGlobalPreferences(appContext))
+                GeoidManager.getInstance().init(appContext)
+
             }
 
             override fun onRegisterFailure(error: IDJIError) {
