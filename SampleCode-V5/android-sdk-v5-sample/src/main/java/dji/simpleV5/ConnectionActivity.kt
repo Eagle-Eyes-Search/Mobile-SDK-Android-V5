@@ -21,8 +21,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 class ConnectionActivity : AppCompatActivity() {
 
     private val tag: String = LogUtils.getTag(this)
-    private val baseMainActivityVm: BaseMainActivityVm by viewModels()
-    private val msdkInfoVm: MSDKInfoVm by viewModels()
+//    private val baseMainActivityVm: BaseMainActivityVm by viewModels()
+//    private val msdkInfoVm: MSDKInfoVm by viewModels()
     private val msdkManagerVM: MSDKManagerVM by globalViewModels()
     private val handler: Handler = Handler(Looper.getMainLooper())
     private val disposable = CompositeDisposable()
@@ -73,24 +73,24 @@ class ConnectionActivity : AppCompatActivity() {
 
 
 
-        msdkInfoVm.msdkInfo.observe(this) {
-            val summaryText = "SDK Version: ${msdkInfoVm.msdkInfo.value?.SDKVersion} ${msdkInfoVm.msdkInfo.value?.buildVer}" +
-                    "\nProduct Name: ${msdkInfoVm.msdkInfo.value?.productType?.name}" +
-                    "\nPackage Product Category: ${msdkInfoVm.msdkInfo.value?.packageProductCategory}" +
-                    "\nIs SDK Debug: ${msdkInfoVm.msdkInfo.value?.isDebug}"
-            text_view_msdk_info.text = summaryText
-        }
+//        msdkInfoVm.msdkInfo.observe(this) {
+//            val summaryText = "SDK Version: ${msdkInfoVm.msdkInfo.value?.SDKVersion} ${msdkInfoVm.msdkInfo.value?.buildVer}" +
+//                    "\nProduct Name: ${msdkInfoVm.msdkInfo.value?.productType?.name}" +
+//                    "\nPackage Product Category: ${msdkInfoVm.msdkInfo.value?.packageProductCategory}" +
+//                    "\nIs SDK Debug: ${msdkInfoVm.msdkInfo.value?.isDebug}"
+//            text_view_msdk_info.text = summaryText
+//        }
 
-        view_base_info.setOnClickListener {
-            baseMainActivityVm.doPairing { showToast(it) }
-        }
+//        view_base_info.setOnClickListener {
+////            baseMainActivityVm.doPairing { showToast(it) }
+//        }
     }
 
     private fun observeSDKManager() {
         msdkManagerVM.lvRegisterState.observe(this) { resultPair ->
             val statusText = if (resultPair.first) {
                 showToast("Register Success")
-                StringUtils.getResStr(this, R.string.registered).also { msdkInfoVm.initListener() }
+//                StringUtils.getResStr(this, R.string.registered).also { msdkInfoVm.initListener() }
             } else {
                 showToast("Register Failure: ${resultPair.second}")
                 StringUtils.getResStr(this, R.string.unregistered)
