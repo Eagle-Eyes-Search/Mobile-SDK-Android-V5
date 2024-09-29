@@ -41,7 +41,7 @@ class ConnectionActivity : AppCompatActivity() {
                 View.SYSTEM_UI_FLAG_FULLSCREEN or
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 
-        initMSDKInfoView()
+//        initMSDKInfoView()
         observeSDKManager()
 
         // Initialize the PermissionHandler
@@ -69,22 +69,22 @@ class ConnectionActivity : AppCompatActivity() {
         } else false
     }
 
-    private fun initMSDKInfoView() {
-
-
-
-//        msdkInfoVm.msdkInfo.observe(this) {
-//            val summaryText = "SDK Version: ${msdkInfoVm.msdkInfo.value?.SDKVersion} ${msdkInfoVm.msdkInfo.value?.buildVer}" +
-//                    "\nProduct Name: ${msdkInfoVm.msdkInfo.value?.productType?.name}" +
-//                    "\nPackage Product Category: ${msdkInfoVm.msdkInfo.value?.packageProductCategory}" +
-//                    "\nIs SDK Debug: ${msdkInfoVm.msdkInfo.value?.isDebug}"
-//            text_view_msdk_info.text = summaryText
-//        }
-
-//        view_base_info.setOnClickListener {
-////            baseMainActivityVm.doPairing { showToast(it) }
-//        }
-    }
+//    private fun initMSDKInfoView() {
+//
+//
+//
+////        msdkInfoVm.msdkInfo.observe(this) {
+////            val summaryText = "SDK Version: ${msdkInfoVm.msdkInfo.value?.SDKVersion} ${msdkInfoVm.msdkInfo.value?.buildVer}" +
+////                    "\nProduct Name: ${msdkInfoVm.msdkInfo.value?.productType?.name}" +
+////                    "\nPackage Product Category: ${msdkInfoVm.msdkInfo.value?.packageProductCategory}" +
+////                    "\nIs SDK Debug: ${msdkInfoVm.msdkInfo.value?.isDebug}"
+////            text_view_msdk_info.text = summaryText
+////        }
+//
+////        view_base_info.setOnClickListener {
+//////            baseMainActivityVm.doPairing { showToast(it) }
+////        }
+//    }
 
     private fun observeSDKManager() {
         msdkManagerVM.lvRegisterState.observe(this) { resultPair ->
@@ -103,17 +103,17 @@ class ConnectionActivity : AppCompatActivity() {
             showToast("Product: ${it.second}, ConnectionState: ${it.first}")
         }
 
-        msdkManagerVM.lvProductChanges.observe(this) {
-            showToast("Product: $it Changed")
-        }
-
-        msdkManagerVM.lvInitProcess.observe(this) {
-            showToast("Init Process event: ${it.first.name}")
-        }
-
-        msdkManagerVM.lvDBDownloadProgress.observe(this) {
-            showToast("Database Download Progress: ${it.first}/${it.second}")
-        }
+//        msdkManagerVM.lvProductChanges.observe(this) {
+//            showToast("Product: $it Changed")
+//        }
+//
+//        msdkManagerVM.lvInitProcess.observe(this) {
+//            showToast("Init Process event: ${it.first.name}")
+//        }
+//
+//        msdkManagerVM.lvDBDownloadProgress.observe(this) {
+//            showToast("Database Download Progress: ${it.first}/${it.second}")
+//        }
     }
 
     private fun showToast(content: String) {
