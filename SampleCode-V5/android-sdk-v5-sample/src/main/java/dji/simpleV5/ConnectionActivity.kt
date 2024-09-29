@@ -95,19 +95,21 @@ class ConnectionActivity : AppCompatActivity() {
 
     private fun observeSDKManager() {
         msdkManagerVM.registrationStatus.observe(this) { (isRegistered, statusString) ->
-            val statusText = if (isRegistered) {
-                showToast("Register Success")
-//                StringUtils.getResStr(this, R.string.registered).also { msdkInfoVm.initListener() }
-            } else {
-                showToast("Register Failure: ${isRegistered}")
-//                StringUtils.getResStr(this, R.string.unregistered)
-            }
+//            val statusText = if (isRegistered) {"Register Success"
+////                StringUtils.getResStr(this, R.string.registered).also { msdkInfoVm.initListener() }
+//            } else {
+//                "Register Failure: ${isRegistered}"
+////                StringUtils.getResStr(this, R.string.unregistered)
+//            }
             text_view_registered.text = statusString
+
             if (isRegistered) handler.postDelayed({ openCockpitDoor() }, 5000)
         }
 
         msdkManagerVM.productConnectionState.observe(this) {
             showToast("Product: ${it.second}, ConnectionState: ${it.first}")
+            // Sho the product connection state
+            text_view_msdk_info.text = "Product: ${it.second}, ConnectionState: ${it.first}"
         }
 
 //        msdkManagerVM.lvProductChanges.observe(this) {
