@@ -15,6 +15,7 @@ class SimplePilotingActivity : AppCompatActivity() {
         primaryFpvWidget = findViewById(R.id.widget_primary_fpv)
         // Set the video source to the main camera
         primaryFpvWidget.updateVideoSource(ComponentIndexType.LEFT_OR_MAIN)
+//        primaryFpvWidget.overlay.r
 
     }
 }

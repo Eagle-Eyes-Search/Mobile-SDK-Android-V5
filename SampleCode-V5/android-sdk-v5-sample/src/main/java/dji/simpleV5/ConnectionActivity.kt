@@ -56,6 +56,9 @@ class ConnectionActivity : AppCompatActivity() {
 
         // Check and request permissions
         permissionHandler.checkAndRequestPermissions()
+
+
+
     }
 
     override fun onResume() {
@@ -93,6 +96,15 @@ class ConnectionActivity : AppCompatActivity() {
 ////        }
 //    }
 
+    private fun updateInfoDisplay() {
+        val productInfo = msdkManagerVM.getDroneSDKInfo()
+        val summaryText = "SDK Version: ${productInfo.sdkVersion} ${productInfo.buildVersion}" +
+                "\nProduct Name: ${productInfo.productType}" +
+                "\nConnection State: ${msdkManagerVM.productConnectionState.value?.second}" +
+                "\nRegistered: ${msdkManagerVM.registrationStatus.value?.second}"
+        text_view_msdk_info.text = summaryText
+    }
+
     private fun observeSDKManager() {
         msdkManagerVM.registrationStatus.observe(this) { (isRegistered, statusString) ->
 //            val statusText = if (isRegistered) {"Register Success"
@@ -101,7 +113,8 @@ class ConnectionActivity : AppCompatActivity() {
 //                "Register Failure: ${isRegistered}"
 ////                StringUtils.getResStr(this, R.string.unregistered)
 //            }
-            text_view_registered.text = statusString
+//            text_view_registered.text = statusString
+            updateInfoDisplay()
 
             if (isRegistered) handler.postDelayed({ openCockpitDoor() }, 5000)
         }
@@ -109,11 +122,13 @@ class ConnectionActivity : AppCompatActivity() {
         msdkManagerVM.productConnectionState.observe(this) {
             showToast("Product: ${it.second}, ConnectionState: ${it.first}")
             // Sho the product connection state
-            text_view_msdk_info.text = "Product: ${it.second}, ConnectionState: ${it.first}"
+//            text_view_msdk_info.text = "Product: ${it.second}, ConnectionState: ${it.first}"
+            updateInfoDisplay()
         }
 
 //        msdkManagerVM.lvProductChanges.observe(this) {
-//            showToast("Product: $it Changed")
+////            showToast("Product: $it Changed")
+//            updateInfoDisplay()
 //        }
 //
 //        msdkManagerVM.lvInitProcess.observe(this) {
