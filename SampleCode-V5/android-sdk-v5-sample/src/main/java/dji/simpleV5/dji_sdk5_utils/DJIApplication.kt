@@ -15,7 +15,7 @@ import dji.simpleV5.IMSDKManager
 open class DJIApplication : Application() {
 
 //    private val msdkManagerVM2: MSDKManagerVM by globalViewModels()
-    private val msdkManagerVM: IMSDKManager by globalViewModels<MSDKManagerVM2>()
+    private val msdkManagerVM: IMSDKManager by globalViewModels<DjiSdk5Manager>()
 
     override fun onCreate() {
         super.onCreate()

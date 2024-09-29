@@ -1,18 +1,15 @@
 package dji.simpleV5
 
-import PermissionHelper
+import DJIPermissionHelper
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import dji.simpleV5.dji_sdk5_utils.MSDKManagerVM2
+import dji.simpleV5.dji_sdk5_utils.DjiSdk5Manager
 import dji.simpleV5.dji_sdk5_utils.globalViewModels
 //import dji.v5.utils.common.LogUtils
 //import dji.v5.utils.common.StringUtils
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -27,10 +24,8 @@ DJI-specific functionality has been factored out to MSDKManagerVM2.kt
 class ConnectionActivity : AppCompatActivity() {
 
     private val tag: String = "ConnectionActivity"
-    private val msdkManagerVM: IMSDKManager by globalViewModels<MSDKManagerVM2>()
-    private val handler: Handler = Handler(Looper.getMainLooper())
-
-    private lateinit var permissionHandler: PermissionHelper
+    private val msdkManagerVM: IMSDKManager by globalViewModels<DjiSdk5Manager>()
+    private lateinit var permissionHandler: DJIPermissionHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +42,7 @@ class ConnectionActivity : AppCompatActivity() {
         // Create observers that update the UI in response to changes in SDK
         msdkManagerVM.registrationStatus.observe(this) { (isRegistered, statusString) ->
             updateInfoDisplay()
-            if (isRegistered) handler.postDelayed({ openCockpitDoor() }, 5000)
+            if (isRegistered) default_layout_button.postDelayed({ openCockpitDoor() }, 5000)  // Any view will do
         }
         msdkManagerVM.productConnectionState.observe(this) {
             showToast("Product: ${it.second}, ConnectionState: ${it.first}")
@@ -59,7 +54,7 @@ class ConnectionActivity : AppCompatActivity() {
         }
 
         // Initialize the PermissionHandler and request permissions
-        permissionHandler = PermissionHelper(this).also { it.checkAndRequestPermissions()  }
+        permissionHandler = DJIPermissionHelper(this).also { it.checkAndRequestPermissions()  }
 //        permissionHandler.checkAndRequestPermissions()
 
     }
@@ -67,12 +62,6 @@ class ConnectionActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         permissionHandler.checkAndRequestPermissions()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        handler.removeCallbacksAndMessages(null)
-
     }
 
     private fun shouldFinishActivity(): Boolean {
