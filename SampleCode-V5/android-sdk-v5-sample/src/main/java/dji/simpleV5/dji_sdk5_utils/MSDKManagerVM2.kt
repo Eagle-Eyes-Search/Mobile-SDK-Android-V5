@@ -1,6 +1,8 @@
 package dji.simpleV5.dji_sdk5_utils
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +19,7 @@ import dji.v5.manager.interfaces.SDKManagerCallback
 import dji.v5.ux.core.communication.DefaultGlobalPreferences
 import dji.v5.ux.core.communication.GlobalPreferencesManager
 import dji.v5.ux.core.util.UxSharedPreferencesUtil
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class MSDKManagerVM2 : ViewModel(), IMSDKManager {
     // The data is held in livedata mode, but you can also save the results of the sdk callbacks any way you like.
@@ -32,6 +35,9 @@ class MSDKManagerVM2 : ViewModel(), IMSDKManager {
     override val registrationStatus: MutableLiveData<Pair<Boolean, String>> by lazy {MutableLiveData<Pair<Boolean, String>>()}
     override val productConnectionState: MutableLiveData<Pair<Boolean, String>> by lazy {MutableLiveData<Pair<Boolean, String>>()}
     override val systemState: MutableLiveData<systemState> by lazy {MutableLiveData<systemState>()}
+
+    // No idea what purpose this ser
+    private val disposable = CompositeDisposable()
 
 
     override fun initMobileSDK(appContext: Context) {
@@ -124,6 +130,7 @@ class MSDKManagerVM2 : ViewModel(), IMSDKManager {
 
     fun destroyMobileSDK() {
         SDKManager.getInstance().destroy()
+        disposable.dispose()
     }
 
 }
