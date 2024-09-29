@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import dji.simpleV5.dji_sdk5_utils.*
 import dji.v5.common.utils.GeoidManager
+import dji.v5.manager.interfaces.ISDKManager
 import dji.v5.utils.common.LogUtils
 import dji.v5.utils.common.StringUtils
 import dji.v5.ux.core.communication.DefaultGlobalPreferences
@@ -23,7 +24,8 @@ class ConnectionActivity : AppCompatActivity() {
     private val tag: String = LogUtils.getTag(this)
 //    private val baseMainActivityVm: BaseMainActivityVm by viewModels()
 //    private val msdkInfoVm: MSDKInfoVm by viewModels()
-    private val msdkManagerVM: MSDKManagerVM by globalViewModels()
+//    private val msdkManagerVM: ISDKManager by globalViewModels<MSDKManagerVM2>()
+    private val msdkManagerVM: IMSDKManager by globalViewModels<MSDKManagerVM2>()
     private val handler: Handler = Handler(Looper.getMainLooper())
     private val disposable = CompositeDisposable()
 
@@ -41,7 +43,7 @@ class ConnectionActivity : AppCompatActivity() {
                 View.SYSTEM_UI_FLAG_FULLSCREEN or
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 
-        initMSDKInfoView()
+//        initMSDKInfoView()
         observeSDKManager()
 
         // Initialize the PermissionHandler
@@ -69,51 +71,51 @@ class ConnectionActivity : AppCompatActivity() {
         } else false
     }
 
-    private fun initMSDKInfoView() {
-
-
-
-//        msdkInfoVm.msdkInfo.observe(this) {
-//            val summaryText = "SDK Version: ${msdkInfoVm.msdkInfo.value?.SDKVersion} ${msdkInfoVm.msdkInfo.value?.buildVer}" +
-//                    "\nProduct Name: ${msdkInfoVm.msdkInfo.value?.productType?.name}" +
-//                    "\nPackage Product Category: ${msdkInfoVm.msdkInfo.value?.packageProductCategory}" +
-//                    "\nIs SDK Debug: ${msdkInfoVm.msdkInfo.value?.isDebug}"
-//            text_view_msdk_info.text = summaryText
-//        }
-
-//        view_base_info.setOnClickListener {
-////            baseMainActivityVm.doPairing { showToast(it) }
-//        }
-    }
+//    private fun initMSDKInfoView() {
+//
+//
+//
+////        msdkInfoVm.msdkInfo.observe(this) {
+////            val summaryText = "SDK Version: ${msdkInfoVm.msdkInfo.value?.SDKVersion} ${msdkInfoVm.msdkInfo.value?.buildVer}" +
+////                    "\nProduct Name: ${msdkInfoVm.msdkInfo.value?.productType?.name}" +
+////                    "\nPackage Product Category: ${msdkInfoVm.msdkInfo.value?.packageProductCategory}" +
+////                    "\nIs SDK Debug: ${msdkInfoVm.msdkInfo.value?.isDebug}"
+////            text_view_msdk_info.text = summaryText
+////        }
+//
+////        view_base_info.setOnClickListener {
+//////            baseMainActivityVm.doPairing { showToast(it) }
+////        }
+//    }
 
     private fun observeSDKManager() {
-        msdkManagerVM.lvRegisterState.observe(this) { resultPair ->
+        msdkManagerVM.registrationStatus.observe(this) { resultPair ->
             val statusText = if (resultPair.first) {
                 showToast("Register Success")
 //                StringUtils.getResStr(this, R.string.registered).also { msdkInfoVm.initListener() }
             } else {
                 showToast("Register Failure: ${resultPair.second}")
-                StringUtils.getResStr(this, R.string.unregistered)
+//                StringUtils.getResStr(this, R.string.unregistered)
             }
             text_view_registered.text = StringUtils.getResStr(R.string.registration_status, statusText)
             if (resultPair.first) handler.postDelayed({ prepareUxActivity() }, 5000)
         }
 
-        msdkManagerVM.lvProductConnectionState.observe(this) {
+        msdkManagerVM.productConnectionState.observe(this) {
             showToast("Product: ${it.second}, ConnectionState: ${it.first}")
         }
 
-        msdkManagerVM.lvProductChanges.observe(this) {
-            showToast("Product: $it Changed")
-        }
-
-        msdkManagerVM.lvInitProcess.observe(this) {
-            showToast("Init Process event: ${it.first.name}")
-        }
-
-        msdkManagerVM.lvDBDownloadProgress.observe(this) {
-            showToast("Database Download Progress: ${it.first}/${it.second}")
-        }
+//        msdkManagerVM.lvProductChanges.observe(this) {
+//            showToast("Product: $it Changed")
+//        }
+//
+//        msdkManagerVM.lvInitProcess.observe(this) {
+//            showToast("Init Process event: ${it.first.name}")
+//        }
+//
+//        msdkManagerVM.lvDBDownloadProgress.observe(this) {
+//            showToast("Database Download Progress: ${it.first}/${it.second}")
+//        }
     }
 
     private fun showToast(content: String) {
