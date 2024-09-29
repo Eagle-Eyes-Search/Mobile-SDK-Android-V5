@@ -36,10 +36,6 @@ class MSDKManagerVM2 : ViewModel(), IMSDKManager {
     override val productConnectionState: MutableLiveData<Pair<Boolean, String>> by lazy {MutableLiveData<Pair<Boolean, String>>()}
     override val systemState: MutableLiveData<systemState> by lazy {MutableLiveData<systemState>()}
 
-    // No idea what purpose this ser
-    private val disposable = CompositeDisposable()
-
-
     override fun initMobileSDK(appContext: Context) {
 
 
@@ -130,7 +126,6 @@ class MSDKManagerVM2 : ViewModel(), IMSDKManager {
 
     fun destroyMobileSDK() {
         SDKManager.getInstance().destroy()
-        disposable.dispose()
     }
 
 }
