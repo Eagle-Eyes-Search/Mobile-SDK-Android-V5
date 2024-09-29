@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dji.sdk.keyvalue.key.ProductKey
 import dji.simpleV5.IMSDKManager
-import dji.simpleV5.DroneSDKInfo
+import dji.simpleV5.systemState
 import dji.v5.common.error.IDJIError
 import dji.v5.common.register.DJISDKInitEvent
 import dji.v5.common.utils.GeoidManager
@@ -29,20 +29,14 @@ class MSDKManagerVM2 : ViewModel(), IMSDKManager {
     private var lastConnectedProductString: String? = null
     private val tag = "MSDKManagerVM2"
 
-    override val registrationStatus: MutableLiveData<Pair<Boolean, String>> by lazy {
-        MutableLiveData<Pair<Boolean, String>>()
-    }
-    override val productConnectionState: MutableLiveData<Pair<Boolean, String>> by lazy {
-        MutableLiveData<Pair<Boolean, String>>()
-    }
+    override val registrationStatus: MutableLiveData<Pair<Boolean, String>> by lazy {MutableLiveData<Pair<Boolean, String>>()}
+    override val productConnectionState: MutableLiveData<Pair<Boolean, String>> by lazy {MutableLiveData<Pair<Boolean, String>>()}
+    override val systemState: MutableLiveData<systemState> by lazy {MutableLiveData<systemState>()}
 
 
     override fun initMobileSDK(appContext: Context) {
 
-        ProductKey.KeyProductType.create().listen(this) {
-            log("KeyProductType:$it")
-            lastConnectedProductString = it.toString()
-        }
+
         // Initialize and set the sdk callback, which is held internally by the sdk until destroy() is called
         SDKManager.getInstance().init(appContext, object : SDKManagerCallback {
             override fun onRegisterSuccess() {
@@ -55,8 +49,19 @@ class MSDKManagerVM2 : ViewModel(), IMSDKManager {
                 GlobalPreferencesManager.initialize(DefaultGlobalPreferences(appContext))
                 GeoidManager.getInstance().init(appContext)
 
+                log("Starting KeyProductType listener")
+                ProductKey.KeyProductType.create().listen(this) {
+                    log("KeyProductType:$it")
+                    lastConnectedProductString = it.toString()
+                    productConnectionState.postValue(Pair(true, "Product Changed"))
 
+                    systemState.postValue(systemState(
+                        sdkVersion = msdkInfoModel.getSDKVersion(),
+                        buildVersion = msdkInfoModel.getBuildVersion(),
+                        productType = lastConnectedProductString,
+                    ))
 
+                }
 
             }
 
@@ -102,23 +107,20 @@ class MSDKManagerVM2 : ViewModel(), IMSDKManager {
         Log.i(tag, message)
     }
 
-    override fun getDroneSDKInfo(): DroneSDKInfo {
-//        msdkInfo.value = MSDKInfo(msdkInfoModel.getSDKVersion())
-//        msdkInfo.value?.buildVer = msdkInfoModel.getBuildVersion()
-//        msdkInfo.value?.isDebug = msdkInfoModel.isDebug()
-//        msdkInfo.value?.packageProductCategory = msdkInfoModel.getPackageProductCategory()
-//        msdkInfo.value?.isLDMEnabled = LDMManager.getInstance().isLDMEnabled.toString()
-//        msdkInfo.value?.isLDMLicenseLoaded = LDMManager.getInstance().isLDMLicenseLoaded.toString()
-//        msdkInfo.value?.coreInfo = msdkInfoModel.getCoreInfo()
-//        val msdkInfo = MSDKInfo(msdkInfoModel.getSDKVersion())
-        return DroneSDKInfo(
-            sdkVersion = msdkInfoModel.getSDKVersion(),
-            buildVersion = msdkInfoModel.getBuildVersion(),
-            productType = lastConnectedProductString,
-//            productType = ProductKey.KeyProductType.create().value.toString(),
-//            productType = dji.v5.manager.SDKManager().
-        )
-    }
+//    fun getDroneSDKInfo(): DroneSDKInfo {
+////        msdkInfo.value = MSDKInfo(msdkInfoModel.getSDKVersion())
+////        msdkInfo.value?.buildVer = msdkInfoModel.getBuildVersion()
+////        msdkInfo.value?.isDebug = msdkInfoModel.isDebug()
+////        msdkInfo.value?.packageProductCategory = msdkInfoModel.getPackageProductCategory()
+////        msdkInfo.value?.isLDMEnabled = LDMManager.getInstance().isLDMEnabled.toString()
+////        msdkInfo.value?.isLDMLicenseLoaded = LDMManager.getInstance().isLDMLicenseLoaded.toString()
+////        msdkInfo.value?.coreInfo = msdkInfoModel.getCoreInfo()
+////        val msdkInfo = MSDKInfo(msdkInfoModel.getSDKVersion())
+//
+//
+//
+//    }
+
 
     fun destroyMobileSDK() {
         SDKManager.getInstance().destroy()

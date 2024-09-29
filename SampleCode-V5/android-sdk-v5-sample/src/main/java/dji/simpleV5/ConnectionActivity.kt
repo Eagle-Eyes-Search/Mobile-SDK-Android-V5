@@ -97,9 +97,9 @@ class ConnectionActivity : AppCompatActivity() {
 //    }
 
     private fun updateInfoDisplay() {
-        val productInfo = msdkManagerVM.getDroneSDKInfo()
-        val summaryText = "SDK Version: ${productInfo.sdkVersion} ${productInfo.buildVersion}" +
-                "\nProduct Name: ${productInfo.productType}" +
+        val productInfo = msdkManagerVM.systemState.value
+        val summaryText = "SDK Version: ${productInfo?.sdkVersion} build: ${productInfo?.buildVersion}" +
+                "\nProduct Name: ${productInfo?.productType}" +
                 "\nConnection State: ${msdkManagerVM.productConnectionState.value?.second}" +
                 "\nRegistered: ${msdkManagerVM.registrationStatus.value?.second}"
         text_view_msdk_info.text = summaryText
@@ -123,6 +123,11 @@ class ConnectionActivity : AppCompatActivity() {
             showToast("Product: ${it.second}, ConnectionState: ${it.first}")
             // Sho the product connection state
 //            text_view_msdk_info.text = "Product: ${it.second}, ConnectionState: ${it.first}"
+            updateInfoDisplay()
+        }
+
+        msdkManagerVM.systemState.observe(this) {
+            showToast("System State: ${it.sdkVersion}")
             updateInfoDisplay()
         }
 
