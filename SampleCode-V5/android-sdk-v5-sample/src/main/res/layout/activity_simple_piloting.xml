@@ -5,9 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <dji.v5.ux.core.widget.fpv.FPVWidget
+<!--    <dji.v5.ux.core.widget.fpv.FPVWidget-->
+<!--        android:id="@+id/widget_primary_fpv"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"/>-->
+    <dji.simpleV5.dji_sdk5_utils.SimpleDJIVideoWidget
         android:id="@+id/widget_primary_fpv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
