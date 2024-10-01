@@ -11,7 +11,6 @@ import dji.sdk.keyvalue.value.common.ComponentIndexType
 import dji.v5.manager.interfaces.ICameraStreamManager
 import dji.v5.utils.common.LogPath
 import dji.v5.utils.common.LogUtils
-import dji.v5.ux.R
 import dji.v5.ux.core.base.DJISDKModel
 import dji.v5.ux.core.base.widget.ConstraintLayoutWidget
 import dji.v5.ux.core.communication.ObservableInMemoryKeyedStore
@@ -40,7 +39,10 @@ open class SimpleDJIVideoWidget @JvmOverloads constructor(
         override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
             this@SimpleDJIVideoWidget.width = width
             this@SimpleDJIVideoWidget.height = height
-            LogUtils.i(LogPath.SAMPLE, "surfaceChanged: ${widgetModel.getCameraIndex()}, width:$width, height:$height")
+            LogUtils.i(
+                LogPath.SAMPLE,
+                "surfaceChanged: ${widgetModel.getCameraIndex()}, width:$width, height:$height"
+            )
             updateCameraStream()
         }
 
@@ -53,7 +55,9 @@ open class SimpleDJIVideoWidget @JvmOverloads constructor(
     }
 
     val widgetModel: FPVWidgetModel = FPVWidgetModel(
-        DJISDKModel.getInstance(), ObservableInMemoryKeyedStore.getInstance(), FlatCameraModule()
+        DJISDKModel.getInstance(),
+        ObservableInMemoryKeyedStore.getInstance(),
+        FlatCameraModule()
     )
 
     init {
@@ -69,9 +73,18 @@ open class SimpleDJIVideoWidget @JvmOverloads constructor(
     }
 
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
-        // Inflate the layout and initialize the fpvSurfaceView
-        inflate(context, R.layout.uxsdk_widget_fpv, this)
-        fpvSurfaceView = findViewById(R.id.surface_view_fpv)
+        // Create the SurfaceView programmatically
+        fpvSurfaceView = SurfaceView(context)
+
+        // Set layout parameters for the SurfaceView
+        val layoutParams = ConstraintLayout.LayoutParams(
+            ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT
+        )
+        fpvSurfaceView.layoutParams = layoutParams
+
+        // Add the SurfaceView to the layout
+        this.addView(fpvSurfaceView)
     }
 
     override fun onAttachedToWindow() {
@@ -88,27 +101,13 @@ open class SimpleDJIVideoWidget @JvmOverloads constructor(
         super.onDetachedFromWindow()
     }
 
-    override fun reactToModelChanges() {
-        // Implement necessary reactions here if any
-    }
+    override fun reactToModelChanges() = Unit
 
     fun updateVideoSource(source: ComponentIndexType) {
         LogUtils.i(LogPath.SAMPLE, "updateVideoSource", source, this)
         widgetModel.updateCameraSource(source, CameraLensType.UNKNOWN)
         updateCameraStream()
         fpvSurfaceView.invalidate()
-    }
-
-    fun setOnFPVStreamSourceListener(listener: FPVStreamSourceListener) {
-        widgetModel.streamSourceListener = listener
-    }
-
-    fun setSurfaceViewZOrderOnTop(onTop: Boolean) {
-        fpvSurfaceView.setZOrderOnTop(onTop)
-    }
-
-    fun setSurfaceViewZOrderMediaOverlay(isMediaOverlay: Boolean) {
-        fpvSurfaceView.setZOrderMediaOverlay(isMediaOverlay)
     }
 
     private fun updateCameraStream() {
@@ -129,10 +128,6 @@ open class SimpleDJIVideoWidget @JvmOverloads constructor(
                 widgetModel.removeCameraStreamSurface(it)
             }
         }
-    }
-
-    override fun getWidgetStateUpdate(): Flowable<ModelState> {
-        return super.getWidgetStateUpdate()
     }
 
     sealed class ModelState
