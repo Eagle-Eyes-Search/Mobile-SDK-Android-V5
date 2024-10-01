@@ -55,7 +55,7 @@
                 android:layout_margin="4dp"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                tools:text="@string/sdk_version" />
+                tools:text="Awaiting Registration..." />
 
 <!--            <TextView-->
 <!--                android:id="@+id/text_view_registered"-->

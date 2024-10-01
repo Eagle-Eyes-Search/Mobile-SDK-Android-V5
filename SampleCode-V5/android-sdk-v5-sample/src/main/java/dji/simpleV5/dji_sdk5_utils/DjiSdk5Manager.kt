@@ -5,8 +5,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dji.sdk.keyvalue.key.ProductKey
+import dji.simpleV5.ConnectionState
 import dji.simpleV5.IMSDKManager
-import dji.simpleV5.systemState
+import dji.simpleV5.SystemState
 import dji.v5.common.error.IDJIError
 import dji.v5.common.register.DJISDKInitEvent
 import dji.v5.common.utils.GeoidManager
@@ -21,17 +22,17 @@ import dji.v5.ux.core.util.UxSharedPreferencesUtil
 
 class DjiSdk5Manager : ViewModel(), IMSDKManager {
     // The data is held in livedata mode, but you can also save the results of the sdk callbacks any way you like.
-    val lvRegisterState = MutableLiveData<Pair<Boolean, IDJIError?>>()
-    val lvProductConnectionState = MutableLiveData<Pair<Boolean, Int>>()
-    val lvProductChanges = MutableLiveData<Int>()
-    val lvInitProcess = MutableLiveData<Pair<DJISDKInitEvent, Int>>()
-    val lvDBDownloadProgress = MutableLiveData<Pair<Long, Long>>()
+//    val lvRegisterState = MutableLiveData<Pair<Boolean, IDJIError?>>()
+//    val lvProductConnectionState = MutableLiveData<Pair<Boolean, Int>>()
+//    val lvProductChanges = MutableLiveData<Int>()
+//    val lvInitProcess = MutableLiveData<Pair<DJISDKInitEvent, Int>>()
+//    val lvDBDownloadProgress = MutableLiveData<Pair<Long, Long>>()
     private var lastConnectedProductString: String? = null
     private val tag = "DjiSdk5Manager"
 
-    override val registrationStatus: MutableLiveData<Pair<Boolean, String>> by lazy {MutableLiveData<Pair<Boolean, String>>()}
-    override val productConnectionState: MutableLiveData<Pair<Boolean, String>> by lazy {MutableLiveData<Pair<Boolean, String>>()}
-    override val systemState: MutableLiveData<systemState> by lazy {MutableLiveData<systemState>()}
+    override val registrationStatus: MutableLiveData<ConnectionState> by lazy {MutableLiveData<ConnectionState>()}
+    override val productConnectionState: MutableLiveData<ConnectionState> by lazy {MutableLiveData<ConnectionState>()}
+    override val systemState: MutableLiveData<SystemState> by lazy {MutableLiveData<SystemState>()}
 
     companion object {
         private var instance: DjiSdk5Manager? = null
@@ -46,13 +47,14 @@ class DjiSdk5Manager : ViewModel(), IMSDKManager {
 
 
     override fun initMobileSDK(appContext: Context) {
-
+        log("Initializing Mobile SDK")
 
         // Initialize and set the sdk callback, which is held internally by the sdk until destroy() is called
         SDKManager.getInstance().init(appContext, object : SDKManagerCallback {
             override fun onRegisterSuccess() {
-                lvRegisterState.postValue(Pair(true, null))
-                registrationStatus.postValue(Pair(true, "Registration Successful"))
+//                lvRegisterState.postValue(Pair(true, null))
+
+                registrationStatus.postValue(ConnectionState(true, "Registration Successful"))
 
                 // Ok - initialize a bunch of stuff - God only knows what this does - got it from the sample:
                 // https://github.com/dji-sdk/Mobile-SDK-Android-V5/blob/dbbd5ad95347039ba48e04011f2531cd89c9d1d7/SampleCode-V5/android-sdk-v5-sample/src/main/java/dji/sampleV5/aircraft/DJIAircraftMainActivity.kt#L20
@@ -64,10 +66,10 @@ class DjiSdk5Manager : ViewModel(), IMSDKManager {
                 ProductKey.KeyProductType.create().listen(this) {
                     log("KeyProductType:$it")
                     lastConnectedProductString = it.toString()
-                    productConnectionState.postValue(Pair(true, "Product Changed"))
+                    productConnectionState.postValue(ConnectionState(true, "$it Connected"))
 
                     val config = SDKConfig.getInstance()
-                    systemState.postValue(systemState(
+                    systemState.postValue(SystemState(
                         sdkVersion = config.registrationSDKVersion,
                         buildVersion = config.buildVersion,
                         productType = lastConnectedProductString,
@@ -78,31 +80,33 @@ class DjiSdk5Manager : ViewModel(), IMSDKManager {
             }
 
             override fun onRegisterFailure(error: IDJIError) {
-                lvRegisterState.postValue(Pair(false, error))
-                registrationStatus.postValue(Pair(false, "Registration Failed - ${error.description()}"))
+//                lvRegisterState.postValue(Pair(false, error))
+                log("Registration Failed - ${error.description()}")
+                registrationStatus.postValue(ConnectionState(false, "Registration Failed - ${error.description()}"))
             }
 
             override fun onProductDisconnect(productId: Int) {
-                lvProductConnectionState.postValue(Pair(false, productId))
-                productConnectionState.postValue(Pair(false, "Product Disconnected"))
+//                lvProductConnectionState.postValue(Pair(false, productId))
+                productConnectionState.postValue(ConnectionState(false, "Product Disconnected"))
                 lastConnectedProductString = null
             }
 
             override fun onProductConnect(productId: Int) {
-                lvProductConnectionState.postValue(Pair(true, productId))
-                productConnectionState.postValue(Pair(true, "Product Connected"))
+//                lvProductConnectionState.postValue(Pair(true, productId))
+                log("Product Connected: $productId")
+                productConnectionState.postValue(ConnectionState(true, "Product Connected"))
 
 
             }
 
             override fun onProductChanged(productId: Int) {
-                lvProductChanges.postValue(productId)
-                productConnectionState.postValue(Pair(true, "Product Changed"))
+//                lvProductChanges.postValue(productId)
+                productConnectionState.postValue(ConnectionState(true, "Product Changed"))
 
             }
 
             override fun onInitProcess(event: DJISDKInitEvent, totalProcess: Int) {
-                lvInitProcess.postValue(Pair(event, totalProcess))
+//                lvInitProcess.postValue(Pair(event, totalProcess))
                 // Don't forget to call the registerApp()
                 if (event == DJISDKInitEvent.INITIALIZE_COMPLETE) {
                     SDKManager.getInstance().registerApp()
@@ -110,7 +114,7 @@ class DjiSdk5Manager : ViewModel(), IMSDKManager {
             }
 
             override fun onDatabaseDownloadProgress(current: Long, total: Long) {
-                lvDBDownloadProgress.postValue(Pair(current, total))
+//                lvDBDownloadProgress.postValue(Pair(current, total))
             }
         })
     }

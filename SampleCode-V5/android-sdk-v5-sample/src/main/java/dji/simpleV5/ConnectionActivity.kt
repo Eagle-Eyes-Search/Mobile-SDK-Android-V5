@@ -45,7 +45,7 @@ class ConnectionActivity : AppCompatActivity() {
             if (isRegistered) default_layout_button.postDelayed({ openCockpitDoor() }, 5000)  // Any view will do
         }
         msdkManagerVM.productConnectionState.observe(this) {
-            showToast("Product: ${it.second}, ConnectionState: ${it.first}")
+            showToast(it.message)
             updateInfoDisplay()
         }
         msdkManagerVM.systemState.observe(this) {
@@ -75,8 +75,8 @@ class ConnectionActivity : AppCompatActivity() {
         val productInfo = msdkManagerVM.systemState.value
         val summaryText = "SDK Version: ${productInfo?.sdkVersion} build: ${productInfo?.buildVersion}" +
                 "\nProduct Name: ${productInfo?.productType}" +
-                "\nConnection State: ${msdkManagerVM.productConnectionState.value?.second}" +
-                "\nRegistered: ${msdkManagerVM.registrationStatus.value?.second}"
+//                "\nConnection State: ${msdkManagerVM.productConnectionState.value?.second}" +
+                "\nRegistered: ${msdkManagerVM.registrationStatus.value?.message}"
         text_view_msdk_info.text = summaryText
     }
 
