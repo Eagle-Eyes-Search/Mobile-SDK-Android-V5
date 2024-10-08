@@ -15,9 +15,7 @@ import dji.v5.ux.core.base.DJISDKModel
 import dji.v5.ux.core.base.widget.ConstraintLayoutWidget
 import dji.v5.ux.core.communication.ObservableInMemoryKeyedStore
 import dji.v5.ux.core.module.FlatCameraModule
-import dji.v5.ux.core.widget.fpv.FPVStreamSourceListener
 import dji.v5.ux.core.widget.fpv.FPVWidgetModel
-import io.reactivex.rxjava3.core.Flowable
 
 private const val TAG = "FPVWidget"
 
