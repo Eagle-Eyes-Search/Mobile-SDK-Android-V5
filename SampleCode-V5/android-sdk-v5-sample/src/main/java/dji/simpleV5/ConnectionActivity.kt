@@ -1,33 +1,31 @@
 package dji.simpleV5
 
-import PermissionHelper
+import DJIPermissionHelper
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
-import androidx.activity.viewModels
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import dji.simpleV5.dji_sdk5_utils.*
-import dji.v5.common.utils.GeoidManager
-import dji.v5.utils.common.LogUtils
-import dji.v5.utils.common.StringUtils
-import dji.v5.ux.core.communication.DefaultGlobalPreferences
-import dji.v5.ux.core.communication.GlobalPreferencesManager
-import dji.v5.ux.core.util.UxSharedPreferencesUtil
-import io.reactivex.rxjava3.disposables.CompositeDisposable
+import dji.simpleV5.dji_sdk5_utils.DjiSdk5Manager
+import dji.simpleV5.dji_sdk5_utils.globalViewModels
+//import dji.v5.utils.common.LogUtils
+//import dji.v5.utils.common.StringUtils
 import kotlinx.android.synthetic.main.activity_main.*
+
+
+/*
+This is an adaptation od DJIMainActivity from the sample app
+https://github.com/dji-sdk/Mobile-SDK-Android-V5/blob/dev-sdk-main/SampleCode-V5/android-sdk-v5-sample/src/main/java/dji/sampleV5/aircraft/DJIMainActivity.kt
+
+DJI-specific functionality has been factored out to MSDKManagerVM2.kt
+
+ */
 
 class ConnectionActivity : AppCompatActivity() {
 
-    private val tag: String = LogUtils.getTag(this)
-//    private val baseMainActivityVm: BaseMainActivityVm by viewModels()
-//    private val msdkInfoVm: MSDKInfoVm by viewModels()
-    private val msdkManagerVM: MSDKManagerVM by globalViewModels()
-    private val handler: Handler = Handler(Looper.getMainLooper())
-    private val disposable = CompositeDisposable()
-
-    private lateinit var permissionHandler: PermissionHelper
+    private val tag: String = "ConnectionActivity"
+    private val msdkManagerVM: IMSDKManager by globalViewModels<DjiSdk5Manager>()
+    private lateinit var permissionHandler: DJIPermissionHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,25 +39,29 @@ class ConnectionActivity : AppCompatActivity() {
                 View.SYSTEM_UI_FLAG_FULLSCREEN or
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 
-//        initMSDKInfoView()
-        observeSDKManager()
+        // Create observers that update the UI in response to changes in SDK
+        msdkManagerVM.registrationStatus.observe(this) { (isRegistered, statusString) ->
+            updateInfoDisplay()
+            if (isRegistered) default_layout_button.postDelayed({ openCockpitDoor() }, 5000)  // Any view will do
+        }
+        msdkManagerVM.productConnectionState.observe(this) {
+            showToast(it.message)
+            updateInfoDisplay()
+        }
+        msdkManagerVM.systemState.observe(this) {
+            showToast("System State: ${it.sdkVersion}")
+            updateInfoDisplay()
+        }
 
-        // Initialize the PermissionHandler
-        permissionHandler = PermissionHelper(this)
+        // Initialize the PermissionHandler and request permissions
+        permissionHandler = DJIPermissionHelper(this).also { it.checkAndRequestPermissions()  }
+//        permissionHandler.checkAndRequestPermissions()
 
-        // Check and request permissions
-        permissionHandler.checkAndRequestPermissions()
     }
 
     override fun onResume() {
         super.onResume()
         permissionHandler.checkAndRequestPermissions()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        handler.removeCallbacksAndMessages(null)
-        disposable.dispose()
     }
 
     private fun shouldFinishActivity(): Boolean {
@@ -69,73 +71,26 @@ class ConnectionActivity : AppCompatActivity() {
         } else false
     }
 
-//    private fun initMSDKInfoView() {
-//
-//
-//
-////        msdkInfoVm.msdkInfo.observe(this) {
-////            val summaryText = "SDK Version: ${msdkInfoVm.msdkInfo.value?.SDKVersion} ${msdkInfoVm.msdkInfo.value?.buildVer}" +
-////                    "\nProduct Name: ${msdkInfoVm.msdkInfo.value?.productType?.name}" +
-////                    "\nPackage Product Category: ${msdkInfoVm.msdkInfo.value?.packageProductCategory}" +
-////                    "\nIs SDK Debug: ${msdkInfoVm.msdkInfo.value?.isDebug}"
-////            text_view_msdk_info.text = summaryText
-////        }
-//
-////        view_base_info.setOnClickListener {
-//////            baseMainActivityVm.doPairing { showToast(it) }
-////        }
-//    }
-
-    private fun observeSDKManager() {
-        msdkManagerVM.lvRegisterState.observe(this) { resultPair ->
-            val statusText = if (resultPair.first) {
-                showToast("Register Success")
-//                StringUtils.getResStr(this, R.string.registered).also { msdkInfoVm.initListener() }
-            } else {
-                showToast("Register Failure: ${resultPair.second}")
-                StringUtils.getResStr(this, R.string.unregistered)
-            }
-            text_view_registered.text = StringUtils.getResStr(R.string.registration_status, statusText)
-            if (resultPair.first) handler.postDelayed({ prepareUxActivity() }, 5000)
-        }
-
-        msdkManagerVM.lvProductConnectionState.observe(this) {
-            showToast("Product: ${it.second}, ConnectionState: ${it.first}")
-        }
-
-//        msdkManagerVM.lvProductChanges.observe(this) {
-//            showToast("Product: $it Changed")
-//        }
-//
-//        msdkManagerVM.lvInitProcess.observe(this) {
-//            showToast("Init Process event: ${it.first.name}")
-//        }
-//
-//        msdkManagerVM.lvDBDownloadProgress.observe(this) {
-//            showToast("Database Download Progress: ${it.first}/${it.second}")
-//        }
+    private fun updateInfoDisplay() {
+        val productInfo = msdkManagerVM.systemState.value
+        val summaryText = "SDK Version: ${productInfo?.sdkVersion} build: ${productInfo?.buildVersion}" +
+                "\nProduct Name: ${productInfo?.productType}" +
+//                "\nConnection State: ${msdkManagerVM.productConnectionState.value?.second}" +
+                "\nRegistered: ${msdkManagerVM.registrationStatus.value?.message}"
+        text_view_msdk_info.text = summaryText
     }
 
     private fun showToast(content: String) {
-        ToastUtils.showToast(content)
+        Toast.makeText(this, content, Toast.LENGTH_SHORT).show()
     }
 
-    private fun <T> enableDefaultLayout(cl: Class<T>) {
-        enableShowCaseButton(default_layout_button, cl)
-    }
-
-    private fun <T> enableShowCaseButton(view: View, cl: Class<T>) {
-        view.isEnabled = true
-        view.setOnClickListener {
-            Intent(this, cl).also { startActivity(it) }
+    private fun openCockpitDoor() {
+        default_layout_button.isEnabled = true
+        default_layout_button.setOnClickListener {
+            it.setOnClickListener {
+                Intent(this, SimplePilotingActivity::class.java).also { startActivity(it) }
+            }
         }
-    }
-
-    private fun prepareUxActivity() {
-        UxSharedPreferencesUtil.initialize(this)
-        GlobalPreferencesManager.initialize(DefaultGlobalPreferences(this))
-        GeoidManager.getInstance().init(this)
-        enableDefaultLayout(SimplePilotingActivity::class.java)
     }
 
 }

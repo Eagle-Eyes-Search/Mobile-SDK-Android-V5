@@ -55,17 +55,17 @@
                 android:layout_margin="4dp"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                tools:text="@string/sdk_version" />
+                tools:text="Awaiting Registration..." />
 
-            <TextView
-                android:id="@+id/text_view_registered"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="4dp"
-                android:text="@string/unregistered"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/text_view_registered"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_horizontal"-->
+<!--                android:layout_margin="4dp"-->
+<!--                android:text="@string/unregistered"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="14sp" />-->
 
         </LinearLayout>
 

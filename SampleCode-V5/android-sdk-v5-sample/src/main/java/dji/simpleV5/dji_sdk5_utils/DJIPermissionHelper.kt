@@ -1,12 +1,13 @@
 import android.Manifest
-import android.content.Context
 import android.os.Build
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import dji.v5.utils.common.PermissionUtil
 
-class PermissionHelper(
+
+/** Helper class to request permissions needed for dji sdk */
+class DJIPermissionHelper(
     private val activity: AppCompatActivity,
     private val onPermissionsGranted: () -> Unit = {}
 ) {
