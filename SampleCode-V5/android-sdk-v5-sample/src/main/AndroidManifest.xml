@@ -36,6 +36,11 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             />
         <activity
+            android:name="dji.simpleV5.VideoAndLocationPilotingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
+        <activity
             android:name="dji.v5.ux.sample.showcase.defaultlayout.DefaultLayoutActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"

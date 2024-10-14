@@ -14,6 +14,7 @@ import dji.v5.ux.sample.showcase.defaultlayout.DefaultLayoutActivity
 //import dji.v5.utils.common.StringUtils
 import kotlinx.android.synthetic.main.activity_connection.simple_cockpit_button
 import kotlinx.android.synthetic.main.activity_connection.fancy_cockpit_button
+import kotlinx.android.synthetic.main.activity_connection.intermediate_cockpit_button
 import kotlinx.android.synthetic.main.activity_connection.text_view_msdk_info
 
 
@@ -38,6 +39,7 @@ class ConnectionActivity : AppCompatActivity() {
         if (shouldFinishActivity()) return
 
         simple_cockpit_button.setOnClickListener {Intent(this, SimplePilotingActivity::class.java).also { startActivity(it) }}
+        intermediate_cockpit_button.setOnClickListener {Intent(this, VideoAndLocationPilotingActivity::class.java).also { startActivity(it) }}
         fancy_cockpit_button.setOnClickListener {Intent(this, DefaultLayoutActivity::class.java).also { startActivity(it) }}
 
 
@@ -54,6 +56,7 @@ class ConnectionActivity : AppCompatActivity() {
 
                 simple_cockpit_button.postDelayed({
                     simple_cockpit_button.isEnabled = true
+                    intermediate_cockpit_button.isEnabled = true
                     fancy_cockpit_button.isEnabled = true
                   } , 2000)
             }  // Any view will do

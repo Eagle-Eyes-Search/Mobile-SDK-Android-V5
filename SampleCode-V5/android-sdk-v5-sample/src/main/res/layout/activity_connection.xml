@@ -80,6 +80,25 @@
         />
 
         <Button
+            android:id="@+id/intermediate_cockpit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/white"
+            android:elevation="10dp"
+            android:enabled="false"
+            android:foreground="?selectableItemBackground"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Enter Intermediate Cockpit"
+            android:textColor="@color/selector_enable_button"
+            app:layout_constraintTop_toBottomOf="@+id/view_base_info"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <Button
             android:id="@+id/fancy_cockpit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
