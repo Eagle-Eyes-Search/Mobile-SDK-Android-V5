@@ -3,14 +3,19 @@ package dji.simpleV5
 import DJIPermissionHelper
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import dji.simpleV5.dji_sdk5_utils.DjiSdk5Manager
 import dji.simpleV5.dji_sdk5_utils.globalViewModels
+import dji.v5.ux.sample.showcase.defaultlayout.DefaultLayoutActivity
 //import dji.v5.utils.common.LogUtils
 //import dji.v5.utils.common.StringUtils
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_connection.simple_cockpit_button
+import kotlinx.android.synthetic.main.activity_connection.fancy_cockpit_button
+import kotlinx.android.synthetic.main.activity_connection.intermediate_cockpit_button
+import kotlinx.android.synthetic.main.activity_connection.text_view_msdk_info
 
 
 /*
@@ -29,9 +34,14 @@ class ConnectionActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_connection)
 
         if (shouldFinishActivity()) return
+
+        simple_cockpit_button.setOnClickListener {Intent(this, SimplePilotingActivity::class.java).also { startActivity(it) }}
+        intermediate_cockpit_button.setOnClickListener {Intent(this, VideoAndLocationPilotingActivity::class.java).also { startActivity(it) }}
+        fancy_cockpit_button.setOnClickListener {Intent(this, DefaultLayoutActivity::class.java).also { startActivity(it) }}
+
 
         // Set full-screen view
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
@@ -42,22 +52,31 @@ class ConnectionActivity : AppCompatActivity() {
         // Create observers that update the UI in response to changes in SDK
         msdkManagerVM.registrationStatus.observe(this) { (isRegistered, statusString) ->
             updateInfoDisplay()
-            if (isRegistered) default_layout_button.postDelayed({ openCockpitDoor() }, 5000)  // Any view will do
+            if (isRegistered){
+
+                simple_cockpit_button.postDelayed({
+                    simple_cockpit_button.isEnabled = true
+                    intermediate_cockpit_button.isEnabled = true
+                    fancy_cockpit_button.isEnabled = true
+                  } , 2000)
+            }  // Any view will do
         }
         msdkManagerVM.productConnectionState.observe(this) {
-            showToast(it.message)
+//            showToast(it.message)
             updateInfoDisplay()
         }
         msdkManagerVM.systemState.observe(this) {
-            showToast("System State: ${it.sdkVersion}")
+//            showToast("System State: ${it.sdkVersion}")
             updateInfoDisplay()
         }
 
         // Initialize the PermissionHandler and request permissions
         permissionHandler = DJIPermissionHelper(this).also { it.checkAndRequestPermissions()  }
 //        permissionHandler.checkAndRequestPermissions()
-
+        log("onCreate done")
     }
+
+    fun log(message: String) = Log.d(tag, message)
 
     override fun onResume() {
         super.onResume()
@@ -84,13 +103,13 @@ class ConnectionActivity : AppCompatActivity() {
         Toast.makeText(this, content, Toast.LENGTH_SHORT).show()
     }
 
-    private fun openCockpitDoor() {
-        default_layout_button.isEnabled = true
-        default_layout_button.setOnClickListener {
-            it.setOnClickListener {
-                Intent(this, SimplePilotingActivity::class.java).also { startActivity(it) }
-            }
-        }
-    }
+//    private fun openCockpitDoor(activityClass: Class<*> = SimplePilotingActivity::class.java) {
+//        default_layout_button.isEnabled = true
+//        default_layout_button.setOnClickListener {
+//            it.setOnClickListener {
+//                Intent(this, activityClass).also { startActivity(it) }
+//            }
+//        }
+//    }
 
 }
