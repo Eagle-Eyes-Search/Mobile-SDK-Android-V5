@@ -62,11 +62,11 @@ class ConnectionActivity : AppCompatActivity() {
             }  // Any view will do
         }
         msdkManagerVM.productConnectionState.observe(this) {
-            showToast(it.message)
+//            showToast(it.message)
             updateInfoDisplay()
         }
         msdkManagerVM.systemState.observe(this) {
-            showToast("System State: ${it.sdkVersion}")
+//            showToast("System State: ${it.sdkVersion}")
             updateInfoDisplay()
         }
 
