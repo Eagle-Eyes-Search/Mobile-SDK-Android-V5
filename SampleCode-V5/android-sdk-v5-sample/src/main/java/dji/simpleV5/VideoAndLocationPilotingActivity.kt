@@ -37,7 +37,7 @@ class VideoAndLocationPilotingActivity : AppCompatActivity() {
         locationText.text = "Awaiting Location..."
 
         // Get the flows from the DjiFlowProvider
-        djiSdk5DroneAccessor.recalibrateGimbal()
+        djiSdk5DroneAccessor.recalibrateGimbal()  // Recalibrate the gimbal mainly to make sure the yaw offset at North is 0
 
         // Use the custom combineNullable function
         lifecycleScope.launch {
