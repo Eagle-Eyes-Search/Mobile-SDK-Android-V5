@@ -1,10 +1,13 @@
 package dji.simpleV5
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import dji.sdk.keyvalue.value.common.Attitude
 import dji.sdk.keyvalue.value.common.ComponentIndexType
+import dji.sdk.keyvalue.value.common.LocationCoordinate2D
 import dji.simpleV5.dji_sdk5_utils.SimpleDJIVideoWidget
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
@@ -24,6 +27,7 @@ class VideoAndLocationPilotingActivity : AppCompatActivity() {
     private lateinit var locationText: TextView
     private val djiSdk5DroneAccessor: DjiSdk5DroneAccessor by lazy { DjiSdk5DroneAccessor() }
 
+    fun log(message: String) = Log.d("VideoAndLocationPilotingActivity", message)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,16 +49,20 @@ class VideoAndLocationPilotingActivity : AppCompatActivity() {
                 lifecycleScope,
                 djiSdk5DroneAccessor.getAircraftLocationFlow(),
                 djiSdk5DroneAccessor.getAircraftAttitudeFlow(),
-                djiSdk5DroneAccessor.getGimbalAttitudeFlow()
+                djiSdk5DroneAccessor.getGimbalAttitudeFlow(),
+                djiSdk5DroneAccessor.getHomePointFlow(),
             )
                 .catch { error ->
                     locationText.text = error.message ?: "Error updating status"
                 }
-                .collectLatest { (location, aircraftAttitude, gimbalAttitude) ->
+//                .collectLatest { (location: LocationCoordinate3D, aircraftAttitude: Attitude, gimbalAttitude: Attitude, homePoint: LocationCoordinate2D) ->
+                .collectLatest { (location, aircraftAttitude, gimbalAttitude, homePoint) ->
                     val status =
                         "Lat: ${location?.latitude.formatAsLatLong()}, Lon: ${location?.longitude.formatAsLatLong()}, Alt: ${location?.altitude.formatAsAltitude()}\n" +
                         "Aircraft: Pitch: ${aircraftAttitude?.pitch.formatAsAttitude()}, Roll: ${aircraftAttitude?.roll.formatAsAttitude()}, Yaw: ${aircraftAttitude?.yaw.formatAsAttitude()}\n" +
-                        "Gimbal: Pitch: ${gimbalAttitude?.pitch.formatAsAttitude()}, Roll: ${gimbalAttitude?.roll.formatAsAttitude()}, Yaw: ${gimbalAttitude?.yaw.formatAsAttitude()}"
+                        "Gimbal: Pitch: ${gimbalAttitude?.pitch.formatAsAttitude()}, Roll: ${gimbalAttitude?.roll.formatAsAttitude()}, Yaw: ${gimbalAttitude?.yaw.formatAsAttitude()}\n" +
+                        "Home: Lat: ${homePoint?.latitude.formatAsLatLong()}, Lon: ${homePoint?.longitude.formatAsLatLong()}"
+                    log(status)
                     locationText.text = status
                 }
         }
